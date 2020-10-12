@@ -22,8 +22,9 @@ function setup(){
   database = firebase.database();
   console.log(database);
 
-  ground1 = createSprite(width/2, height - 20, width*2, 40);
-  ground2 = createSprite(width/2, height/2, width*2, 40);
+  ground1 = createSprite(width/2, height - 20, width, 40);
+  ground2 = createSprite(width/2, height/2, width, 40);
+  grounds = [ground1, ground2]
 
   // track = createSprite(width/2, height/2, 10, 10);
   // track.addImage(track_img);
@@ -31,6 +32,9 @@ function setup(){
 
   obstacleGroup1 = new Group();
   obstacleGroup2 = new Group();
+  obstacleGroups = [];
+
+  players =[];
 
   resetButton = createButton('reset');
   resetButton.position(100, 100);

@@ -36,57 +36,69 @@ class Game{
   }
   
   play(){
+    players = [player1, player2];
     form.hide();
     Player.getPlayerInfo();
 
-    this.spawnObstacles();
-
-    var ySpacing = 200;
     var index = 0;
+    var x= 50;
+    var y = 100;
+    var ySpacing = 200; 
 
     for(var plr in allPlayers){
 
-      players[index].velocityY = 2;
-      players[index].collide(grounds[index]);
+      grounds[index].x = players[index].x;
+       players[index].collide(grounds[index]);
 
-      allPlayers[plr].xPos = players[index].x;
-      allPlayers[plr].yPos = players[index].y;
+       players[index].velocityY += 2;
+       players[index].velocityX = 20;
+      
+       if(index + 1 == player.index){
+         players[index].shapeColor = 'red';
+         camera.position.x = players[index].x
 
-      if(player.index == index + 1){
-        if(keyDown('space')){
-          players[index].y -= 100;
-        }  
+          if(keyWentDown('space')){
+            players[index].velocityY -= 40
+          }
 
-        players[index].y += 10;
+          player.xPos = players[index].x
+          player.yPos = players[index].y
+          player.updatePlayerInfo();
 
-        // if(obstacleGroups[index].isTouching(players[index])){
-        //   gameState = 2; 
-        // }
-        
+          
+       }
+
+       // This isn't working
+       if(obstacleGroups[index].isTouching(players[index])){
+        gameState = 2;
       }
 
-      
+       index++;
 
-      index++;
+       text(allPlayers[plr].name + " : " + allPlayers[plr].xPos + " , " + allPlayers[plr].yPos,
+        200, ySpacing);
+       ySpacing += 50 ;
+      }
 
-      text(allPlayers[plr].name + " - x: " + allPlayers[plr].xPos + " , y: " + allPlayers[plr].yPos, 200, ySpacing);
-      ySpacing += 50 
-    }
+     this.spawnObstacles();
 
-    player.updatePlayerInfo();
+     
   }
 
-   spawnObstacles(){
-    if(frameCount%150 == 0){
-      var obstacle1 = createSprite(width, ground1.y- 90, 10, 10);
-      obstacle1.velocityX = -7;
+  spawnObstacles(){
+     // spawnObstacles
+     if(frameCount%60 == 0){
+      var obstacle1 = createSprite(player1.x + 600, ground1.y- 90, 10, 10);
+      console.log(obstacle1.x + " , " + player1.xPos);
+      //obstacle1.velocityX = -7;
       obstacle1.debug = true;
       obstacle1.setCollider('rectangle', 0, 0, 50, 100);
       obstacle1.addImage(hurdle_img);
-      obstacleGroup1.add(obstacle1)
-  
-      var obstacle2 = createSprite(width, ground2.y- 90, 10, 10);
-      obstacle2.velocityX = -7;
+      obstacleGroup1.add(obstacle1);
+
+      var obstacle2 = createSprite(player2.x + 600, ground2.y- 90, 10, 10);
+      console.log(obstacle2.x + " , " + player2.xPos);
+      //obstacle2.velocityX = -7;
       obstacle2.debug = true;
       obstacle2.setCollider('rectangle', 0, 0, 50, 100);
       obstacle2.addImage(hurdle_img);
@@ -97,6 +109,7 @@ class Game{
   }
 
   end(){
-    alert('Game Over');
+    console.log('Game Over');
   }
 }
+
